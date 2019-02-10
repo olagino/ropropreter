@@ -1,10 +1,10 @@
-
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 from TouchStyle import *
 from TouchAuxiliary import *
 from roProgram import RoboProProgram
+import os
 from os import listdir as osList
 
 __author__     = "Leon Schnieber"
@@ -17,14 +17,15 @@ class TouchGuiApplication(TouchApplication):
 
         self.status = "nothing"
 
-        self.window = TouchWindow("RoProPreta")
+        self.window = TouchWindow("RoProPreter")
         self.mainBox = QHBoxLayout()
         self.subBoxA = QVBoxLayout()
         # # title
         label = QLabel("Programm auswählen:")
         self.subBoxA.addWidget(label)
         # file list
-        fileList = osList("files/")
+        pathadd = os.path.realpath(__file__).replace("script.py", "")
+        fileList = osList(pathadd + "files/")
         self.listWidget = QListWidget()
         for fileName in fileList:
             item = QListWidgetItem(fileName)
@@ -33,9 +34,7 @@ class TouchGuiApplication(TouchApplication):
         # execute-button
         self.button = QPushButton(".rpp Ausführen")
         self.button.clicked.connect(self.executeButtonClick)
-        self.subBoxA.addWidget(button)
-
-        # self.mainBox.addWidget(self.subBoxA)
+        self.subBoxA.addWidget(self.button)
 
         self.window.centralWidget.setLayout(self.subBoxA)
         self.window.show()
@@ -49,12 +48,13 @@ class TouchGuiApplication(TouchApplication):
 
     def runProgram(self, programName):
         if self.status == "nothing":
-            ropro = RoboProProgram("files/" + programName)
             self.button.setEnabled(False)
             self.button.setText(".rpp läuft!")
+            pathadd = os.path.realpath(__file__).replace("script.py", "")
+            ropro = RoboProProgram(pathadd + "files/" + programName)
             self.status = "running"
             ropro.run()
-            self.button.setText(".rpp Ausführen")
+            self.button.setText("fertig! .rpp Ausführen")
             self.button.setEnabled(True)
             self.status = "nothing"
 

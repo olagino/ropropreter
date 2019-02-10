@@ -36,7 +36,7 @@ class RoboProIOWrap(object):
             for ifconf in ifconfig:
                 if ifconf in ["IF1", "EM1", "EM2", "EM3", "EM4", "EM5", "EM6", "EM7", "EM8"]:
                     self.ifaces[ifconf] = ifconfig[ifconf]
-        self.ifaces["IF1"] = ftrobopy.ftrobopy("direct")
+        self.ifaces["IF1"] = ftrobopy.ftrobopy("auto")
         time.sleep(0.5)
 
     def setSensorType(self, IFaceNumber, IFacePortNo, IFacePortType):
